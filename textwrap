@@ -1,0 +1,81 @@
+#!/usr/bin/python3
+# textwrap - wrap long lines to fit on the screen
+# Copyright (C) 2012  Jakob Kramer <jakob.kramer@gmx.de>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+try:
+    import struct
+
+    from fcntl import ioctl
+    from termios import TIOCGWINSZ
+except ImportError:
+    detection_support = False
+else:
+    detection_support = True
+
+from sys import stdin, stdout
+from textwrap import fill
+from argparse import ArgumentParser
+
+
+def terminal_size():
+    'Return a (height, width) pair for standard output.'
+    return struct.unpack('HHHH', ioctl(stdout.fileno(), TIOCGWINSZ,
+                                       struct.pack('HHHH', 0, 0, 0, 0)))[:2]
+
+
+def parse_arguments():
+    if detection_support and stdout.isatty():
+        height, width = terminal_size()
+        width -= 1
+    else:
+        width = 79
+
+    parser = ArgumentParser(description='Wrap long lines to fit on the screen '
+                            'with proper line breaks and print them on '
+                            'standard output.')
+
+    parser.add_argument('-w', '--width', type=int, default=width,
+                        help='Specifies how long the lines are supposed to '
+                        'be.  By default this is the decremented width of the '
+                        'open terminal or 79 on normal output files or unsup'
+                        'ported systems.')
+
+    parser.add_argument('filename', metavar='FILE', default='-', help='File to '
+                        'be wrapped.  Use "-" for standard input. (default: -)',
+                        nargs='?')
+
+    return parser, parser.parse_args()
+
+
+def fill_multi(text, **kwargs):
+    'Wrap multiple lines of text.  `text` is an iterator over the input lines.'
+    return '\n'.join(fill(line, **kwargs) for line in text.splitlines())
+
+
+def main():
+    parser, args = parse_arguments()
+
+    try:
+        f = args.filename == '-' and stdin or open(args.filename)
+        print(fill_multi(f.read(), width=args.width))
+        f.close()
+    except Exception as e:
+        parser.error(e)
+
+
+if __name__ == '__main__':
+    main()

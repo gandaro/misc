@@ -1,0 +1,7 @@
+In this git repository I collect small scripts...
+
+textwrap:
+	textwrap is a Python 3 script that wraps long lines in files and program
+	output with proper line breaks, so they fit on the screen.
+
+	license: GPLv2
