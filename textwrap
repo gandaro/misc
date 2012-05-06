@@ -25,6 +25,7 @@ from sys import stdin, stdout
 from textwrap import fill
 from argparse import ArgumentParser
 
+WIDTH = 79
 
 def terminal_size():
     'Return a (height, width) pair for standard output.'
@@ -35,9 +36,10 @@ def terminal_size():
 def parse_arguments():
     if detection_support and stdout.isatty():
         height, width = terminal_size()
-        width -= 1
+        if width > WIDTH:
+            width = WIDTH
     else:
-        width = 79
+        width = WIDTH
 
     parser = ArgumentParser(description='Wrap long lines to fit on the screen '
                             'with proper line breaks and print them on '
@@ -45,9 +47,11 @@ def parse_arguments():
 
     parser.add_argument('-w', '--width', type=int, default=width,
                         help='Specifies how long the lines are supposed to '
-                        'be.  By default this is the decremented width of the '
-                        'open terminal or 79 on normal output files or unsup'
-                        'ported systems.')
+                        'be.  By default this is the width of the open '
+                        'terminal or {width} on normal output files or '
+                        'unsupported systems.  If the terminal has more than '
+                        '{width} columns, the width defaults to '
+                        '{width}.'.format(width=WIDTH))
 
     parser.add_argument('filename', metavar='FILE', default='-', help='File to '
                         'be wrapped.  Use "-" for standard input. (default: -)',
