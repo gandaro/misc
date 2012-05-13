@@ -1,3 +1,5 @@
+/* vim: set cin et sw=4 ts=4: */
+
 /*
  *  fprm - print file permissions similar to `ls'
  *  Copyright (C) 2012  Jakob Kramer <jakob.kramer@gmx.de>
@@ -28,30 +30,37 @@ void errexit(const char *str) {
 }
 
 int main(int argc, char* argv[]) {
-    int i, j;
+    int group, offset, file;
     struct stat s;
-    char output[] = "----------";
+    char output[10] = "----------";
 
-    if (argc != 2)
-        errexit("usage: fprm FILE");
+    if (argc < 2)
+        errexit("Usage: fprm FILE...");
 
-    if (stat(argv[1], &s) == -1)
-        errexit("fprm: stat() failed");
+    for (file = 1; file < argc; file++) {
+        if (stat(argv[file], &s) == -1)
+            errexit("fprm: stat() failed");
 
-    if (S_ISDIR(s.st_mode))
-        output[0] = 'd';
+        if (S_ISDIR(s.st_mode))
+            output[0] = 'd';
 
-    for (i = 0100, j = 0; i >= 1 && j <= 9; i /= 010, j += 3) {
-        if (s.st_mode & (i * 4))
-            output[1 + j] = 'r';
+        for (group = 0100, offset = 0; group >= 1; group /= 010, offset += 3) {
+            if (s.st_mode & (group * 4))
+                output[1 + offset] = 'r';
 
-        if (s.st_mode & (i * 2))
-            output[2 + j] = 'w';
+            if (s.st_mode & (group * 2))
+                output[2 + offset] = 'w';
 
-        if (s.st_mode & i)
-            output[3 + j] = 'x';
+            if (s.st_mode & group)
+                output[3 + offset] = 'x';
+        }
+
+        /* print file name, if there is more than one file specified */
+        if (argc > 2)
+            printf("%s: ", argv[file]);
+
+        puts(output);
     }
 
-    puts(output);
     return EXIT_SUCCESS;
 }
