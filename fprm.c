@@ -2,7 +2,7 @@
 
 /*
  *  fprm - print file permissions similar to `ls'
- *  Copyright (C) 2012  Jakob Kramer <jakob.kramer@gmx.de>
+ *  Copyright (C) 2012-2015  Jakob Kramer <jakob.kramer@gmx.de>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2 as
@@ -32,7 +32,7 @@ void errexit(const char *str) {
 int main(int argc, char* argv[]) {
     int group, offset, file;
     struct stat s;
-    char output[10] = "----------";
+    char output[11] = "----------";
 
     if (argc < 2)
         errexit("Usage: fprm FILE...");
