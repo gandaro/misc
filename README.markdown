@@ -18,8 +18,5 @@ as “ls” does (e.g. “-rwxr-xr-x”).
 **license**: GPLv2
 
 ### Build Instructions
-I tested fprm on Linux 3.2 with GCC 4.6 and GNU make 3.81, but it
-should be compatible with any POSIX-compliant system and
-C90-compliant C compiler.
 
-        cc -ansi -O3 -o fprm fprm.c
+	$ cc -Os -o fprm fprm.c -ansi
