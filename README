@@ -16,7 +16,7 @@ license: Unlicense (no restrictions)
 fprm
 ----
 
-*fprm* is a C90 program that prints file permissions of the form
+*fprm* is a C program that prints file permissions of the form
 as “ls” does (e.g. “-rwxr-xr-x”).
 
 license: Unlicense (no restrictions)
