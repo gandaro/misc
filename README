@@ -1,21 +1,25 @@
-# Miscellaneous
+Miscellaneous
+=============
 
-This git repository is a collection of random scripts that
-were written by me.
+This git repository is a collection of random programs that I wrote.
 
-## textwrap
-*textwrap* is a Python 3 script, that wraps long lines in files or
+textwrap
+--------
+
+*textwrap* is a Python 3 script that wraps long lines in files or
 standard output with proper line breaks so they fit on the screen.
-This is basically a stripped down version of “fmt,” but it is
-Unicode-aware.
+This is basically a stripped-down version of “fmt,” it's doing one
+thing in a better way though: it understands UTF-8.
 
-**license**: GPLv2
+license: Unlicense (no restrictions)
 
-## fprm
+fprm
+----
+
 *fprm* is a C90 program that prints file permissions of the form
 as “ls” does (e.g. “-rwxr-xr-x”).
 
-**license**: GPLv2
+license: Unlicense (no restrictions)
 
 ### Build Instructions
 
