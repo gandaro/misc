@@ -11,7 +11,7 @@ standard output with proper line breaks so they fit on the screen.
 This is basically a stripped-down version of “fmt,” it's doing one
 thing in a better way though: it understands UTF-8.
 
-license: Unlicense (no restrictions)
+license: CC0 1.0 (Public Domain Dedication)
 
 fprm
 ----
@@ -19,7 +19,7 @@ fprm
 *fprm* is a C program that prints file permissions of the form
 as “ls” does (e.g. “-rwxr-xr-x”).
 
-license: Unlicense (no restrictions)
+license: CC0 1.0 (Public Domain Dedication)
 
 ### Build Instructions
 
